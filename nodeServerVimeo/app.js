@@ -1,6 +1,19 @@
 var express = require('express')
 var app = express()
 var bodyParser = require('body-parser')
+var mysql = require('mysql')
+
+//접속정보 
+const connection = mysql.createConnection({
+    host:"localhost",
+    user: "root",
+    password: "chrin^^1015",
+    port: 3306,
+    database: "user"
+});
+
+//connection관련 객체 정보
+connection.connect();
 
 app.listen(3000, function() {
 	console.log("start; express server on port 3000");
