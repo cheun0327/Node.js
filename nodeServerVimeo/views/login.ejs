@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>email form</title>
+</head>
+<body>
+    <form action="/email/form" method="post">
+        email : <input type="text" name="email"><br/>
+        passwd : <input type="password" name="password"><br/>
+    </form>
+
+    <button class="ajaxsend">login</button>
+    <div class="result"></div>
+
+    <script>
+        document.querySelector('.ajaxsend').addEventListener('click', function(){
+            var email = document.getElementsByName('email')[0].vlaue;  //form을 배열 형태로 접근
+            var password = document.getElementsByName('password')[0].value;
+            sendAjax('http://localhost:3000/email/ajax', {'email': email, 
+            'password':password})
+        })
+
+        function sendAjax(url, data){
+            data = JSON.stringify(data); //string형태로 변형
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url);
+            xhr.setRequestHeader('Content-Type', "application/json");//server로 데이터 보낼때 json형식으로 보냄
+            xhr.send(data); //data를 보냄
+
+            xhr.addEventListener('load', function(){
+                var result = JSON.parse(xhr.responseText);
+                var resultDiv = document.querySelector(".result");
+
+                if(result.result !== "ok") resultDiv.innerHTML = "your email is not found";
+                else resultDiv.innerHTML = result.name;
+            });
+        }
+    </script>
+</body>
+</html>

@@ -23,7 +23,7 @@ router.get('/', function(req, res){
     var meg;
     var errMsg = req.flash('error') //에러 메시지는 flash로 넘어온다
     if(errMsg) msg = errMsg;
-	res.render('join.ejs', {'message': msg});
+	res.render('login.ejs', {'message': msg});
 })
 
 //passport.serialize
@@ -38,7 +38,7 @@ passport.deserializeUser(function(id, done){
     done(null, id)
 })
 
-passport.use('local-join', new LocalStrategy({
+passport.use('local-login', new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
         passReqToCallback : true
@@ -60,26 +60,12 @@ passport.use('local-join', new LocalStrategy({
     }
 ));
 
+//이 콜백은 리다이렉트 기반으로 하는거라 json응답을 주어야한다. 
 router.post('/',passport.authenticate('local-join', {
     //원래는 callback함수 자리지만, object literal로 표현해도 콜백함수처럼 동작
     successRedirect: '/main',   //성공
     failureRedirect: '/join',   //사용자 이미 있다
     failureFlash: true })
 )
-
-//router.post('/', function(req, res){
-//    var body = req.body;
-//    var email = body.email;
-//    var name = body.name;
-//    var passwd = body.password;
-//
-//    var sql = {email : email, name : name, pw : passwd};
-//
-//    var query = connection.query('insert into user set ?', sql, function(err, rows) {
-//        if(err){throw err;}
-//        else res.render('welcome.ejs', {'name': name, 'id': rows.insertId})
-//    })
-//})
-
 
 module.exports = router;
