@@ -18,8 +18,7 @@
         document.querySelector('.ajaxsend').addEventListener('click', function(){
             var email = document.getElementsByName('email')[0].vlaue;  //form을 배열 형태로 접근
             var password = document.getElementsByName('password')[0].value;
-            sendAjax('http://localhost:3000/email/ajax', {'email': email, 
-            'password':password})
+            sendAjax('http://localhost:3000/login', {'email': email, 'password':password});
         })
 
         function sendAjax(url, data){
@@ -34,8 +33,8 @@
                 var result = JSON.parse(xhr.responseText);
                 var resultDiv = document.querySelector(".result");
 
-                if(result.result !== "ok") resultDiv.innerHTML = "your email is not found";
-                else resultDiv.innerHTML = result.name;
+                if(result.email) resultDiv.innerHTML = "welcome welcome"+result.email;
+                else resultDiv.innerHTML = result;
             });
         }
     </script>
